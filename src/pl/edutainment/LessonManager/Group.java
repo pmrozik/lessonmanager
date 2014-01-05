@@ -3,18 +3,33 @@ package pl.edutainment.LessonManager;
 import java.util.List;
 import java.util.ArrayList;
 
-public class Group {
+public class Group implements Comparable<Group>
+{
 
 	private int groupID;
 	private String groupName;
 	private List<Student> studentList = new ArrayList<Student>();
 	private List<Lesson>  lessonList = new ArrayList<Lesson>();
 	
-	Group(int groupID, String groupName)
+	public Group(int groupID, String groupName)
 	{
 		this.groupID = groupID;
 		this.groupName = groupName;
 		this.studentList = studentList;
+	}
+	
+	public int compareTo(Group group2)
+	{
+		if(this.getGroupID() > group2.getGroupID())
+		{
+			return 1;
+		}
+		else if (this.getGroupID() < group2.getGroupID())
+		{
+			return -1;
+		}
+		
+		return 0;
 	}
 	public String getJTreeString()
 	{

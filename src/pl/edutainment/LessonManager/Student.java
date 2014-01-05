@@ -1,11 +1,13 @@
 package pl.edutainment.LessonManager;
 
+import java.sql.Date;
 import java.util.Locale;
 import java.util.List;
 import java.util.ArrayList;
 import org.joda.time.*;
+import org.joda.time.format.*;
 
-public class Student {
+public class Student implements Comparable<Student> {
 
 	private int studentID;
 	private String firstName;
@@ -81,6 +83,55 @@ public class Student {
 		signupDate = builder.signupDate;
 		address = builder.address;	
 	}
+	public int compareTo(Student student2)
+	{
+		String lastName1 = this.getLastName();
+		String lastName2 = student2.getLastName();
+		
+		int lastNameCompResult = lastName1.compareTo(lastName2);
+		
+		if(lastNameCompResult > 0)
+		{
+			return 1;
+		}
+		else if (lastNameCompResult < 0)
+		{
+			return -1;
+		}
+		// Last name the same, compare first names
+	
+		// Compare first names
+		String firstName1 = this.getFirstName();
+		String firstName2 = student2.getFirstName();
+			
+		int firstNameCompResult = firstName1.compareTo(firstName2);
+		
+		if(firstNameCompResult > 0)
+		{
+			return 1;
+		}
+		else if(firstNameCompResult < 0)
+		{
+			return -1;
+		}
+		
+		// First name and last name the same, compare student IDs
+		
+		int id1 = this.getID();
+		int id2 = student2.getID();
+		
+		if(id1 > id2)
+		{
+			return 1;
+		}
+		if(id1 < id2)
+		{
+			return -1;
+		}
+		
+		return 0;
+		
+	}
 	public void addLesson(Lesson lesson)
 	{
 		lessonList.add(lesson);
@@ -93,19 +144,192 @@ public class Student {
 	{
 		this.group = group;
 	}
-	public int getID() { return studentID; }
-	public String getFirstName() { return firstName; }
-	public String getLastName() { return lastName; }
-	public String getPrimaryEmail() { return primaryEmail; }
-	public String getSecondaryEmail() { return secondaryEmail; }
-	public String getPrimaryPhone() { return primaryPhone; }
-	public String getSecondaryPhone() { return secondaryPhone; }
-	public Address getAddress() {return address;}
-	public LocalDate getSignupDate() { return signupDate; }
+	public int getID() 
+	{ 
+		return studentID; 
+	}
+	public String getFirstName() 
+	{ 
+		return firstName; 
+	}
+	public String getLastName() 
+	{ 
+		return lastName; 
+	}
+	public String getPrimaryEmail() 
+	{ 
+		return primaryEmail;
+       	}
+	public String getSecondaryEmail() 
+	{ 
+		return secondaryEmail; 
+	}
+	public String getPrimaryPhone() 
+	{ 
+		return primaryPhone; 
+	}
+	public String getSecondaryPhone() 
+	{ 
+		return secondaryPhone; 
+	}
+	public Address getAddress() 
+	{
+		return address;
+	}
+	public LocalDate getSignupDate() 
+	{ 
+		return signupDate; 
+	}
+	
+	public void setFirstName(String firstName) 
+	{ 
+		this.firstName = firstName; 
+	}
+	public void setLastName(String lastName) 
+	{  
+		this.lastName = lastName; 
+	}
+	public void setPrimaryEmail(String primaryEmail) 
+	{ 
+		this.primaryEmail = primaryEmail; 
+	}
+	public void setSecondaryEmail(String secondaryEmail) 
+	{ 
+		this.secondaryEmail = secondaryEmail; 
+	}
+	public void setPrimaryPhone(String primaryPhone) 
+	{ 
+		this.primaryPhone = primaryPhone; 
+	}
+	public void setSecondaryPhone(String secondaryPhone) 
+	{ 
+		this.secondaryPhone = secondaryPhone; 
+	}
+	public void setAddress(Address address) 
+	{
+		this.address = address;
+	}
+	public void setSignupDate(java.util.Date signupDate) 
+	{ 
+		this.signupDate = LocalDate.fromDateFields(signupDate); 
+	}
 	
 	public String getJTreeString()
 	{
 		return lastName + ", " + firstName;
+	}
+	private void appendSingleQuote(StringBuilder sb)
+	{
+		sb.append("\'");
+	}
+	private void appendComma(StringBuilder sb)
+	{
+		sb.append(',');
+	}
+	public String generateSQLInsert()
+	{
+			
+			StringBuilder fields = new StringBuilder("INSERT INTO student (first_name, last_name");
+			StringBuilder values = new StringBuilder(" VALUES (");
+			
+			appendSingleQuote(values);
+			values.append(getFirstName());
+			appendSingleQuote(values);
+			appendComma(values);
+			appendSingleQuote(values);
+			values.append(getLastName());
+			appendSingleQuote(values);
+			
+			if(!primaryEmail.isEmpty())
+			{
+				appendComma(fields);
+				fields.append("primary_email");
+				appendComma(values);
+				appendSingleQuote(values);
+				values.append(primaryEmail);
+				appendSingleQuote(values);
+			}		
+			if(!secondaryEmail.isEmpty())
+			{
+				appendComma(fields);
+				fields.append("secondary_email");
+				appendComma(values);
+				appendSingleQuote(values);
+				values.append(secondaryEmail);
+				appendSingleQuote(values);
+			}
+			if(!primaryPhone.isEmpty())
+			{
+				appendComma(fields);
+				fields.append("primary_phone");
+				appendComma(values);
+				appendSingleQuote(values);
+				values.append(primaryPhone);
+				appendSingleQuote(values);
+			}	
+			if(!secondaryPhone.isEmpty())
+			{
+				appendComma(fields);
+				fields.append("secondary_phone");
+				appendComma(values);
+				appendSingleQuote(values);
+				values.append(secondaryPhone);
+				appendSingleQuote(values);
+			}
+			if((address != null) && !(address.getStreet().isEmpty()))
+			{
+				fields.append(",street_address, city, postal_code, state, country");
+				appendComma(values);
+				appendSingleQuote(values);
+				values.append(address.getStreet());
+				appendSingleQuote(values);
+				appendComma(values);
+				appendSingleQuote(values);
+				values.append(address.getCity());
+				appendSingleQuote(values);
+				appendComma(values);
+				appendSingleQuote(values);
+				values.append(address.getPostalCode());
+				appendSingleQuote(values);
+				appendComma(values);
+				appendSingleQuote(values);
+				values.append(address.getState());
+				appendSingleQuote(values);
+				appendComma(values);
+				appendSingleQuote(values);
+				values.append(address.getCountry());
+				appendSingleQuote(values);
+			}
+			if(group != null)
+			{
+				appendComma(fields);
+				fields.append("student_group_fk");
+				appendComma(values);
+				values.append(group.getGroupID());
+			}
+			if(signupDate != null)
+			{
+				String dateString = null;
+			
+				DateTimeFormatter dayMonthYear = new DateTimeFormatterBuilder().appendYear(4,4)
+						.appendLiteral("-")
+						.appendMonthOfYear(2)
+						.appendLiteral("-")
+						.appendDayOfMonth(2)
+						.toFormatter();
+			
+				appendComma(fields);
+				fields.append("signup_date");
+				appendComma(values);
+				appendSingleQuote(values);
+				values.append(signupDate.toString(dayMonthYear));
+				appendSingleQuote(values);
+			}
+			
+			fields.append(")");
+			values.append(")");
+			
+			return fields.append(values).toString();
 	}
 	public String toString()
 	{
@@ -119,6 +343,7 @@ public class Student {
 		sb.append(String.format("Secondary e-mail: %s\n", secondaryEmail));
 		sb.append(String.format("Primary phone: %s\n", primaryPhone));
 		sb.append(String.format("Secondary phone: %s\n", secondaryPhone));
+		sb.append(String.format("Signup date: %s\n", signupDate.toString()));
 		
 		if(group!=null)
 			sb.append(group.toString());

@@ -3,7 +3,8 @@ package pl.edutainment.LessonManager;
 import org.joda.time.*;
 import pl.edutainment.LessonManager.Entry.*;
 
-abstract class Lesson {
+public abstract class Lesson 
+{
 
 	private int lessonID;
 		

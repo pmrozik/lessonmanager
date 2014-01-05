@@ -13,7 +13,10 @@ public class YellowLabel extends JLabel {
 		setBackground(new Color(250,244,165));
 		setOpaque(true);
 		Border paddingBorder = BorderFactory.createEmptyBorder(3,10,3,10);
-		Border border = BorderFactory.createLineBorder(Color.BLACK, 1, true);
+                /* Java 7
+		 * Border border = BorderFactory.createLineBorder(Color.BLACK, 1, true);
+		*/
+		Border border = BorderFactory.createLineBorder(Color.BLACK, 1);
 		setBorder(BorderFactory.createCompoundBorder(border, paddingBorder));	
 	}
 }

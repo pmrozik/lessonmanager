@@ -7,7 +7,8 @@ public enum DerbyDB {
 	
 	private String driver = "org.apache.derby.jdbc.EmbeddedDriver";
 	private String dbName = "mynewdb";
-	private String connectionURL = "jdbc:derby:C:\\Users\\Pablo\\java\\derby\\" + dbName;
+	
+	private String connectionURL = "jdbc:derby:../mynewdb";
 	private Connection connection = null;
 	Statement statement;
 	
@@ -24,12 +25,16 @@ public enum DerbyDB {
             //   Create a statement to issue simple commands.  
             statement = connection.createStatement();
 			
-            System.out.print("Executing query...");
+            
 			
 			
-			System.out.println("done.");
+			
+			System.out.print("Loading student list...");
 			loadStudentList();
+			System.out.println("done.");
+			System.out.print("Loading student list...");
 			loadGroupList();
+			System.out.println("done.");
 			
 			
 			}  catch (Throwable e)  {   
@@ -182,6 +187,8 @@ public enum DerbyDB {
                      secondaryEmail(secondaryEmail).primaryPhone(primaryPhone).secondaryPhone(secondaryPhone).address(address).signup(signupDate).build();
                      
                      StudentList.INSTANCE.addStudent(student);
+                     GlazedStudentList.INSTANCE.addStudent(student);
+               
                      
 			}
 			myResult.close();
@@ -192,7 +199,7 @@ public enum DerbyDB {
 	{
 		int groupID = 0;
 		String groupName;
-		
+
 		String selectString = "SELECT * FROM student_group";
 		
 		try
@@ -214,15 +221,35 @@ public enum DerbyDB {
 		}
 		catch (SQLException ex) { ex.printStackTrace(); }
 	}
-	public void update(String sqlInsert)
+	public int getMaxStudentID()
+	{
+		String selectString = "SELECT MAX(student_id) FROM student";
+		int maxStudentID = 0;
+		try
+		{
+			ResultSet myResult = statement.executeQuery(selectString);
+			
+			while (myResult.next())
+			{
+                     maxStudentID =  myResult.getInt(1);                     
+			}
+			
+			myResult.close();
+		}
+		catch (SQLException ex) { ex.printStackTrace(); }
+		
+		return maxStudentID;
+	}
+	public int update(String sql)
 	{
 		try
 		{ 
 			statement = connection.createStatement();
-			statement.executeUpdate(sqlInsert);
-		
+			return statement.executeUpdate(sql);
 		}
 		catch (SQLException ex) { ex.printStackTrace(); }
+	
+		return 0;
 	}
 	public Connection getConnection() { return connection; }
 }

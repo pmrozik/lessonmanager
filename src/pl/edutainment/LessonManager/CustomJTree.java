@@ -4,9 +4,7 @@
 package pl.edutainment.LessonManager;
 
 import javax.swing.JTree;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeSelectionModel;
-
+import javax.swing.tree.*;
 
 public class CustomJTree extends JTree {
 
@@ -15,6 +13,11 @@ public class CustomJTree extends JTree {
 		super(dft);
 		getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		
+	}
+	public CustomJTree(DefaultTreeModel dtm)
+	{
+		super(dtm);
+		getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 	}
 	public String convertValueToText(Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus)
 	{

@@ -8,7 +8,7 @@ import java.util.Calendar;
 import java.util.Currency;
 import java.util.Date;
 
-import javax.swing.JTree;
+import javax.swing.*;
 
 import org.joda.time.*;
 
@@ -32,11 +32,38 @@ public class Tester {
 		// createCompanyContract();
 		//ContractList.INSTANCE.printContracts();
 		
+		try {
+            // Set System L&F
+             UIManager.setLookAndFeel(
+            UIManager.getSystemLookAndFeelClassName());
+		} 
+		catch (UnsupportedLookAndFeelException e) {
+        // handle exception
+		}
+		catch (ClassNotFoundException e) {
+        // handle exception
+		}
+		catch (InstantiationException e) {
+        // handle exception
+		}
+		catch (IllegalAccessException e) {
+        // handle exception
+		}
+
+		
 		DerbyDB.INSTANCE.values();
 		
-		JTree mainTree = JTreeMaker.makeTree();
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+            	JTree mainTree = new CustomJTree(JTreeModel.INSTANCE.getModel());
+        		LessonManager lm = new LessonManager();
+        		JTreeController jtc = new JTreeController(mainTree, lm);
+            }
+        });
+		
+		/*JTree mainTree = new CustomJTree(JTreeModel.INSTANCE.getModel());
 		LessonManager lm = new LessonManager();
-		JTreeController jtc = new JTreeController(mainTree, lm);
+		JTreeController jtc = new JTreeController(mainTree, lm);*/
 			
 		/*
 		for(Student student: StudentList.INSTANCE.getList())

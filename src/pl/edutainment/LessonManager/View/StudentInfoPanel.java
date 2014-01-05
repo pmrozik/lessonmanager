@@ -186,7 +186,7 @@ public class StudentInfoPanel extends JPanel{
 		
 		setEditableFields(false);
 		setFieldNames();
-		addChangeListeners();
+		// addChangeListeners();
 		btnEdit.addActionListener(new SingleClickActionListener());
 
 			
@@ -330,7 +330,7 @@ public class StudentInfoPanel extends JPanel{
 		  
 		  private void addToList(DocumentEvent e)
 		  {
-			  System.out.println(e.getDocument().getProperty("name"));
+			  // System.out.println(e.getDocument().getProperty("name"));
 			  
 		  }
 		  

@@ -3,7 +3,8 @@ package pl.edutainment.LessonManager;
 import java.util.ArrayList;
 import java.util.List;
 
-enum CompanyList {
+public enum CompanyList 
+{
 	INSTANCE;
 
 	private List<Company> companyList = new ArrayList<Company>();

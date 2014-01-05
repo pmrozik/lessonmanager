@@ -1,5 +1,6 @@
 package pl.edutainment.LessonManager.View;
 import java.awt.EventQueue;
+import java.awt.event.*;
 import java.util.*;
 
 import javax.swing.JFrame;
@@ -15,7 +16,7 @@ import javax.swing.JMenuItem;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.TreeSelectionListener;
 
-import pl.edutainment.LessonManager.Controller.JTreeController;
+import pl.edutainment.LessonManager.Controller.*;
 
 public class LessonManager {
 
@@ -73,6 +74,7 @@ public class LessonManager {
 	 */
 	public LessonManager(JTree tree) {
 		
+	
 		this.tree = tree;
 		makeTabbedPanes();
 		initialize();
@@ -106,7 +108,7 @@ public class LessonManager {
 		jtpStudent.setName("jtpStudent"); 
 			
 		jtpStudent.addTab("Info", new StudentInfoPanel());
-		jtpStudent.addTab("Lessons", new JPanel());
+		jtpStudent.addTab("Lessons", new LessonPanel());
 		jtpStudent.addTab("Finances", new JPanel());
 		
 		jtpMap.put(jtpStudent.getName(), jtpStudent);
@@ -134,19 +136,20 @@ public class LessonManager {
 	{
 		tree.addTreeSelectionListener(tsl);
 	}
+
 	private void initialize() {
 		frmLessonManagerBy = new JFrame();
 		frmLessonManagerBy.setTitle("Lesson Manager by Edutainment");
-		frmLessonManagerBy.setBounds(100, 100, 450, 300);
 		frmLessonManagerBy.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmLessonManagerBy.getContentPane().setLayout(new MigLayout("", "[grow]", "[grow]"));
-		
+		frmLessonManagerBy.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		
 	    scrollPane = new JScrollPane();
 		frmLessonManagerBy.getContentPane().add(scrollPane, "cell 0 0,grow");
 		
 
 		scrollPane.setViewportView(jtpStudent);
+		
 		scrollPane.setRowHeaderView(tree);
 		
 		
@@ -159,17 +162,54 @@ public class LessonManager {
 		JMenu mnNew = new JMenu("New");
 		mnFile.add(mnNew);
 		
-		JMenuItem mntmContract = new JMenuItem("Contract");
-		mnNew.add(mntmContract);
+		JMenu mnContract = new JMenu("Contract");
+		mnNew.add(mnContract);
+		
+		JMenuItem mntmCompanyContract = new JMenuItem("Company Contract");
+		JMenuItem mntmPrivateContract = new JMenuItem("Private Contract");
+		
+		mnContract.add(mntmCompanyContract);
+		mnContract.add(mntmPrivateContract);
+		
+		
+		mntmCompanyContract.addActionListener(
+	            new ActionListener() 
+		    {
+	                public void actionPerformed(ActionEvent e) 
+			{
+	                    
+	                	new NewCompanyContractFrameController();
+	                }
+	            }
+	        );
 		
 		JMenuItem mntmGroup = new JMenuItem("Group");
 		mnNew.add(mntmGroup);
 		
 		JMenuItem mntmStudent = new JMenuItem("Student");
 		mnNew.add(mntmStudent);
+		mntmStudent.addActionListener(
+	            new ActionListener() 
+		    {
+	                public void actionPerformed(ActionEvent e) {
+	                    
+	                	new NewStudentFrameController();
+	                }
+	            }
+	        );
 		
 		JMenuItem mntmlesson = new JMenuItem("Lesson");
 		mnNew.add(mntmlesson);
+		mntmlesson.addActionListener(
+	            new ActionListener() 
+		    {
+	                public void actionPerformed(ActionEvent e) 
+			{
+	                    
+	                	new LessonFrameController();
+	                }
+	            }
+	        );
 		
 	}
 

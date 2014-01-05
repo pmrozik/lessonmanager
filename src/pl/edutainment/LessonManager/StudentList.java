@@ -1,16 +1,19 @@
 package pl.edutainment.LessonManager;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import javax.swing.tree.*;
+import java.util.*;
 
-public enum StudentList {
+public enum StudentList 
+{
 	INSTANCE;
 
 	private boolean listChanged=false;
 	
 	private List<Student> studentList = new ArrayList<Student>();
+	private Map<Student, DefaultMutableTreeNode> nodeMap = 
+			new HashMap<Student,DefaultMutableTreeNode>();
 
+	
 	private StudentList()
 	{
 	}
@@ -25,6 +28,14 @@ public enum StudentList {
 			}
 		}
 		return tmpStudent;
+	}
+	public void addNode(Student student, DefaultMutableTreeNode node)
+	{
+		nodeMap.put(student, node);
+	}
+	public DefaultMutableTreeNode getNode(Student student)
+	{
+		return nodeMap.get(student);
 	}
 	public void setListChanged(boolean listChanged)
 	{
@@ -41,13 +52,16 @@ public enum StudentList {
 	public boolean addStudent(Student s)
 	{ 
 		boolean retVal = studentList.add(s);
+		Collections.sort(studentList);
 		return retVal; 
 	}
 	public boolean removeStudent(Student s)
 	{ 
 		if(studentList.contains(s))
 		{
-			return studentList.remove(s);
+			studentList.remove(s);
+			Collections.sort(studentList);
+			return true;
 		}
 		else
 		{
@@ -62,6 +76,7 @@ public enum StudentList {
 		{
 			studentList.set(locIndex, newStudent);
 			listChanged = true;
+			Collections.sort(studentList);
 			return true;
 		}
 		return false;

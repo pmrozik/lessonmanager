@@ -1,6 +1,7 @@
 package pl.edutainment.LessonManager;
 
-class Company {
+public class Company 
+{
 
 	private int companyID;
 	private String name;
@@ -11,6 +12,11 @@ class Company {
 		this.companyID = companyID;
 		this.name = name;
 		this.address = address;
+	}
+	public Company(int companyID, String name)
+	{
+		this.companyID = companyID;
+		this.name = name;
 	}
 
 	// Getters
@@ -27,12 +33,10 @@ class Company {
 	public String toString()
 	{
 		StringBuilder sb = new StringBuilder();
-		sb.append("Company Information\n");
-		sb.append(String.format("ID:  %d\n", companyID));
-		sb.append(String.format("Name: %s\n", name));
-	
-		sb.append(address);
 		
+		sb.append(String.format("%d | ", companyID));
+		sb.append(String.format("%s", name));
+	
 		return sb.toString();
 		
 	}

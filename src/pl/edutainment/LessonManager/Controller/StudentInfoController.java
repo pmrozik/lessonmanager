@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JTextField;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 
 import pl.edutainment.LessonManager.*;
@@ -76,6 +77,8 @@ public class StudentInfoController {
 		{
 			tfm = pnlStudentInfo.getTextFieldMap();
 			boolean updated = false;
+			boolean nameUpdated = false;
+			
 			
 		
 			if(!isEqual(student.getFirstName(), tfm.get("firstName").getText()))
@@ -84,6 +87,7 @@ public class StudentInfoController {
 				System.out.println(sql);
 				DerbyDB.INSTANCE.update(sql);
 				updated = true;
+				nameUpdated = true;
 			}
 			
 		
@@ -94,6 +98,7 @@ public class StudentInfoController {
 				System.out.println(sql);
 				DerbyDB.INSTANCE.update(sql);
 				updated = true;
+				nameUpdated = true;
 			}
 			if(!isEqual(student.getPrimaryEmail(), tfm.get("primaryEmail").getText()))
 			{
@@ -149,12 +154,24 @@ public class StudentInfoController {
 				DerbyDB.INSTANCE.update(sql);
 				updated = true;
 			}
+			
+			
+			
+		
 			if(updated)
 			{
 				Student updatedStudent = DerbyDB.INSTANCE.getStudent(student.getID());
 				StudentList.INSTANCE.updateStudent(student, updatedStudent);
+				if(nameUpdated)
+				{
+					System.out.println("Name was updated");	
 				
-	
+					DefaultMutableTreeNode tn = StudentList.INSTANCE.getNode(student);
+					
+					tn.setUserObject(updatedStudent);
+					tn.notify();
+				}
+				
 			}
 				
 		}

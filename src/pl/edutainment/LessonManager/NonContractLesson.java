@@ -2,7 +2,7 @@ package pl.edutainment.LessonManager;
 
 import java.util.*;
 
-class NonContractLesson extends Lesson {
+public class NonContractLesson extends Lesson {
 
 		private Price price;
 		
